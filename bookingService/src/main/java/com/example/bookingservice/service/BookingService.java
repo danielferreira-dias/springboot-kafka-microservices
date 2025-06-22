@@ -43,7 +43,6 @@ public class BookingService {
         if (request.getTicketCount() > inventoryResponse.getCapacity()){
             throw new RuntimeException("Not enough inventory");
         }
-        System.out.println("Inventory Service Response" + inventoryResponse);
 
         // create booking
         final BookingEvent bookingEvent = createBookingEvent(request, customer, inventoryResponse);
