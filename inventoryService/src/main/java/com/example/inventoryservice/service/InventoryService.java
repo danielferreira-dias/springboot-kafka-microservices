@@ -5,6 +5,7 @@ import com.example.inventoryservice.entity.Venue;
 import com.example.inventoryservice.repository.EventRepository;
 import com.example.inventoryservice.repository.VenueRepository;
 import com.example.inventoryservice.response.VenueInvetoryResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.inventoryservice.response.EventInventoryResponse;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 
 // Services classes are responsibility to handle Bussiness Logic
+@Slf4j
 @Service
 public class InventoryService {
 
@@ -69,5 +71,12 @@ public class InventoryService {
                 .ticketPrice(event.getTicketPrice())
                 .eventId(event.getId())
                 .build();
+    }
+
+    public void updateEventCapacity(final Long eventId, final Long ticketsBooked){
+        final Event event = eventRepository.findById(eventId).orElse(null);
+        event.setLeftCapacity(event.getLeftCapacity() - ticketsBooked);
+        eventRepository.saveAndFlush(event);
+        log.info("Event {} has been updated", event.getName());
     }
 }
